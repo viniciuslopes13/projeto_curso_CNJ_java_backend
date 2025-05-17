@@ -2,14 +2,27 @@ package br.cnj.projeto.models;
 
 import org.springframework.stereotype.Component;
 
-@Component
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
+@Entity
+@Table(name = "CasoJudicial")
 public class CasoJudicial {
     
-    private int numero;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer numero;
     private String decisao;
     private String descricao;
 
+    @Transient
     private CustoJudicial custoJudicial;
+    
+    @Transient
     private TaxaJudicial taxaJudicial;
 
     public CasoJudicial() {
@@ -33,11 +46,11 @@ public class CasoJudicial {
         return custo;
     }
 
-    public int getNumero() {
+    public Integer getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(Integer numero) {
         this.numero = numero;
     }
 
