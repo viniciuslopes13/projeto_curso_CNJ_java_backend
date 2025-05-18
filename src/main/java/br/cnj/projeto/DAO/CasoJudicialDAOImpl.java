@@ -2,7 +2,9 @@ package br.cnj.projeto.DAO;
 
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.cnj.projeto.models.CasoJudicial;
 import jakarta.persistence.EntityManager;
@@ -20,8 +22,13 @@ public class CasoJudicialDAOImpl implements CasoJudicialDAO {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CasoJudicial> findAll() {
-        return entityManager.createQuery("SELECT c FROM CasoJudicial c", CasoJudicial.class).getResultList();       
+        try {
+            return entityManager.createQuery("SELECT c FROM CasoJudicial c", CasoJudicial.class).getResultList();       
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Erro de acesso a dados ao buscar casos judiciais: " + e.getMessage(), e);
+        }
     }
 
     @Override
