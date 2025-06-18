@@ -1,34 +1,28 @@
 package br.cnj.projeto.services;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import br.cnj.projeto.DAO.CasoJudicialDAO;
 import br.cnj.projeto.models.CasoJudicial;
 
 @Service
 public class CasoJudicialService {
     
-    private List<CasoJudicial> casos;
-
-    public CasoJudicialService() {
-        casos = new ArrayList<CasoJudicial>(Arrays.asList(new CasoJudicial[]{
-            new CasoJudicial(1,"A", "Caso 1"),
-            new CasoJudicial(2,"I", "Caso 2"),
-            new CasoJudicial(3,"I", "Caso 3"),
-            new CasoJudicial(4,"A", "Caso 4"),
-        }));
+    private final CasoJudicialDAO casoJudicialDAO;
+    
+    public CasoJudicialService(CasoJudicialDAO casoJudicialDAO){
+        this.casoJudicialDAO = casoJudicialDAO;
     }
 
     /**
      * @return Retorna todos os casos.
      */
     public List<CasoJudicial> pegarTodosOsCasos(){
-        return casos;
+        return casoJudicialDAO.findAll();
     }
 
     /**
@@ -36,12 +30,7 @@ public class CasoJudicialService {
      * @return Retorna um caso a partir do id informado.
      */
     public CasoJudicial pegarCasoPorId(int id){
-        for(CasoJudicial caso : casos){
-            if (caso.getNumero() == id) {
-                return caso;
-            }
-        }
-        return null;
+        return casoJudicialDAO.findById(id);
     }
 
     /**
@@ -49,9 +38,7 @@ public class CasoJudicialService {
      * @return Insere um caso judicial passado por parâmetro e retorna o caso.
      */
     public CasoJudicial insereCasoJudicial(CasoJudicial caso){
-        int id = casos.getLast().getNumero() + 1;
-        caso.setNumero(id);
-        casos.add(caso);
+        casoJudicialDAO.save(caso);        
         return caso;
     }
 
@@ -60,23 +47,25 @@ public class CasoJudicialService {
      * Apaga um caso judicial conforme id passado por parâmetro.
      */
     public void removeCasoJudicial(int id){
-        casos.removeIf(caso -> caso.getNumero() == id);
+        casoJudicialDAO.delete(id);
+    }
+
+
+    /**
+     * @param casoJudicial
+     * Atualiza um caso judicial. Faz um merge de todas as informações
+     */
+    public void update(CasoJudicial casoJudicial){
+        casoJudicialDAO.update(casoJudicial);
     }
 
     /**
      * @param casoJudicial
-     * @return Atualiza um caso judicial. Remove o caso e adiciona um novo com as novas informações.
+     * @return Atualiza um caso judicial. Aqui atualiza somente as novas informações.
      */
     public CasoJudicial atualizaCasoJudicial(Long id, CasoJudicial casoJudicial){
-        CasoJudicial caso = pegarCasoPorId(id.intValue());
-        if(caso != null){
-            casos.remove(caso);
-            caso = casoJudicial;
-            caso.setNumero(id.intValue());
-            casos.add(caso);
-            return caso;
-        }
-        return null;
+        casoJudicialDAO.partialUpdate(id.intValue(), casoJudicial);
+        return casoJudicial;
     }
 
     /**

@@ -3,7 +3,6 @@ package br.cnj.projeto.controllers;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +26,6 @@ public class CasoJudicialController {
     
     private final CasoJudicialService casoJudicialService;
 
-    @Autowired
     public CasoJudicialController(CasoJudicialService service){
         this.casoJudicialService = service;
     }
