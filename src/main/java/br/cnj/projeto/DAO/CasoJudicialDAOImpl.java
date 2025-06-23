@@ -11,6 +11,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 @Repository
+@Transactional
 public class CasoJudicialDAOImpl implements CasoJudicialDAO {
 
     @PersistenceContext

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.cnj.projeto.DAO.CasoJudicialDAO;
 import br.cnj.projeto.models.CasoJudicial;
+import jakarta.transaction.Transactional;
 
 @Service
 public class CasoJudicialService {
