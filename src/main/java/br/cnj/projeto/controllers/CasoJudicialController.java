@@ -3,6 +3,9 @@ package br.cnj.projeto.controllers;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +41,17 @@ public class CasoJudicialController {
     @GetMapping("/{id}")
     public ResponseEntity<CasoJudicial> pegarCasoPorId(@PathVariable Long id){
         return ResponseEntity.ofNullable(casoJudicialService.pegarCasoPorId(id.intValue()));
+    }
+
+    @GetMapping("/hateoas/{id}")
+    public EntityModel<CasoJudicial> getCasoJudicialId(@PathVariable Long id){
+        CasoJudicial casoJudicial = casoJudicialService.pegarCasoPorId(id.intValue());
+        Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CasoJudicialController.class).getCasoJudicialId(id)).withSelfRel();
+        Link updateLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CasoJudicialController.class).atualizaCasoJudicial(id, casoJudicial)).withRel("update");
+        Link deleteLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CasoJudicialController.class).apagaCasoJudicial(id)).withRel("delete");
+        EntityModel<CasoJudicial> resource = EntityModel.of(casoJudicial);
+        resource.add(selfLink,updateLink,deleteLink);
+        return resource;
     }
 
     @PostMapping
