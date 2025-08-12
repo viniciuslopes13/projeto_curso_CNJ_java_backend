@@ -3,6 +3,8 @@ package br.cnj.projeto.controllers;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 public class CasoJudicialController {
     
     private final CasoJudicialService casoJudicialService;
+    private static final Logger logger = (Logger) LogManager.getLogger(CasoJudicialController.class);
 
     public CasoJudicialController(CasoJudicialService service){
         this.casoJudicialService = service;
@@ -35,6 +38,7 @@ public class CasoJudicialController {
     
     @GetMapping
     public ResponseEntity<List<CasoJudicial>> pegarTodosOsCasos(){
+        logger.info("Recuperando todos os casos!");
         return ResponseEntity.ok(casoJudicialService.pegarTodosOsCasos());
     }
 

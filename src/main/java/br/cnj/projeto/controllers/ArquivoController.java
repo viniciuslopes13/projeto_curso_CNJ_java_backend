@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,10 +24,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class ArquivoController {
     
     private static final String DIR_UPLOAD = "uploads/";
+    private static final Logger logger = (Logger) LogManager.getLogger(ArquivoController.class);
 
     @GetMapping
     @PreAuthorize("hasRole('admin')")
     public String getMethodName(){
+        logger.error("Erro ao fazer upload: Arquivo vazio");
         return "Esse é o controlador de arquivos!";
     }
 
